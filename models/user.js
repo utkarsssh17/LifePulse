@@ -14,12 +14,17 @@ const userSchema = new mongoose.Schema({
     },
     hash: String,
     salt: String,
+    dob: Date,
     googleId: String,
     firstName: String,
     lastName: String,
     profilePicture: String,
     bio: String,
-    userLocation: String,
+    location: String,
+    isProfileComplete: {
+        type: Boolean,
+        default: false,
+    },
     eventIds: [
         {
             type: mongoose.Schema.Types.ObjectId,

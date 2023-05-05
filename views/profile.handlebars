@@ -1,6 +1,49 @@
-<h1>
-  Welcome
-  {{user.email}}
-</h1>
-
-<a href="/auth/logout">Logout</a>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card mt-5">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+              <div class="text-center">
+                <div class="profile-picture">
+                  {{#if user.profilePicture}}
+                    <img src="{{user.profilePicture}}" alt="Profile picture" style="max-width: 150px;"  class="rounded-circle profile-picture-img shadow-sm"/>
+                  {{else}}
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg" alt="Profile picture" style="max-width: 150px;"  class="rounded-circle profile-picture-img shadow-sm" />
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="profile-info">
+                <h1 class="mb-4">{{user.firstName}} {{user.lastName}}</h1>
+                <div class="mb-3">
+                  <span class="text-muted">Email:</span>
+                  {{user.email}}
+                </div>
+                <div class="mb-3">
+                  <span class="text-muted">Date of birth:</span>
+                  {{user.dob}}
+                </div>
+                <div class="mb-3">
+                  <span class="text-muted">Bio:</span>
+                  {{user.bio}}
+                </div>
+                <div class="mb-3">
+                  <span class="text-muted">Location:</span>
+                  {{user.location}}
+                </div>
+                <div class="mb-3">
+                  <span class="text-muted">Joined:</span>
+                  {{user.createdAt}}
+                </div>
+                <a href="/auth/logout" class="btn btn-primary">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

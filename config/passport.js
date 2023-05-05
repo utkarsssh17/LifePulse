@@ -21,11 +21,10 @@ passport.use(new GoogleStrategy({
             } else {
                 const newUser = await User.create({
                     googleId: profile.id,
-                    username: profile.displayName,
+                    username: profile.emails[0].value, // Set username to email temporarily
                     email: profile.emails[0].value,
                     firstName: profile.name.givenName,
                     lastName: profile.name.familyName,
-                    profilePicture: profile.photos[0].value,
                 });
                 return done(null, newUser);
             }
