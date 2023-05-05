@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import flash from 'connect-flash';
 import morgan from 'morgan';
+import cors from 'cors';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -35,6 +36,9 @@ export function addGlobalMiddlewares(app) {
     // Connect flash middleware
     app.use(flash());
 
+    // CORS middleware
+    app.use(cors());
+
     // Log HTTP requests to console
     app.use(morgan('dev'));
 
@@ -42,8 +46,18 @@ export function addGlobalMiddlewares(app) {
     app.use(session({
         secret: process.env.SESSION_SECRET,
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: true,
+        cookie: { maxAge: 1000 * 60 * 60 * 24 }
     }));
+
+    // configure flash messages
+    app.use((req, res, next) => {
+        res.locals.successMessage = req.flash('successMessage');
+        res.locals.errorMessage = req.flash("errorMessage");
+        res.locals.error = req.flash("error");
+        res.locals.user = req.user || null;
+        next();
+    });
 
     // Passport middleware
     app.use(passport.initialize());
