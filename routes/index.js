@@ -1,5 +1,6 @@
 import authRoutes from "./auth.js";
 import userRoutes from "./users.js";
+import eventRoutes from "./events.js";
 import imageRoutes from "./images.js";
 
 const constructorMethod = (app) => {
@@ -8,6 +9,7 @@ const constructorMethod = (app) => {
     });
     app.use("/auth", authRoutes);
     app.use("/user", userRoutes);
+    app.use("/events", eventRoutes);
     app.use("/images", imageRoutes);
 
     // catch-all route for invalid routes

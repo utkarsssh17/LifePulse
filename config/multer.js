@@ -18,6 +18,10 @@ const upload = multer({
     storage: storage,
     limits: limits,
     fileFilter: fileFilter,
-}).single('image');
+}).fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 5 }
+]);
+
 
 export { upload };

@@ -93,7 +93,7 @@ const getProfile = async (req, res, next) => {
             req.flash('errorMessage', 'Please complete your profile to continue.');
             return res.redirect('/user/complete-profile');
         }
-        const signedProfilePictureUrl = await imageController.getSignedProfilePictureUrl(user.profilePicture);
+        const signedProfilePictureUrl = await imageController.getSignedUrl(user.profilePicture);
         user.profilePicture = signedProfilePictureUrl;
         user.dob = helperFn.formatDate(user.dob);
         user.createdAt = helperFn.formatDate(user.createdAt);

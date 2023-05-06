@@ -2,6 +2,7 @@ import { upload as multerUpload } from "../config/multer.js";
 import * as s3 from "../config/s3.js";
 import * as helperFn from "./helpers.js";
 import User from "../models/user.js";
+import Event from "../models/event.js";
 import path from "path";
 
 // Upload image to S3
@@ -19,12 +20,16 @@ const uploadImageToS3 = async (file) => {
     return response;
 };
 
+// Upload profile picture
 const uploadProfilePicture = async (req, res, next) => {
     multerUpload(req, res, async (err) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
         try {
+            if (!req.file) {
+                return res.status(400).json({ message: "Please upload a picture." });
+            }
             const result = await uploadImageToS3(req.file);
 
             const user = await User.findById(req.user._id);
@@ -38,8 +43,8 @@ const uploadProfilePicture = async (req, res, next) => {
     });
 };
 
-// Get signed URL of profile picture
-const getSignedProfilePictureUrl = async (fileName) => {
+// Get signed URL of a photo
+const getSignedUrl = async (fileName) => {
     if (!fileName) {
         return null;
     }
@@ -51,4 +56,30 @@ const getSignedProfilePictureUrl = async (fileName) => {
     }
 };
 
-export { uploadProfilePicture, getSignedProfilePictureUrl };
+// Upload event photos
+const uploadEventPhotos = async (req, res, next) => {
+    multerUpload(req, res, async (err) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        try {
+            if (!req.files['images']) {
+                return res.status(400).json({ message: "Please upload atleast one photo." });
+            }
+            const photos = []
+            for (const file of req.files['images']) {
+                const result = await uploadImageToS3(file);
+                photos.push(result.fileName);
+            }
+            const event = await Event.findById(req.params.eventId);
+            event.photos = photos;
+            event.displayPicture = photos[0];
+            await event.save();
+            return res.status(200).json({ imageUrls: photos });
+        } catch (error) {
+            return res.status(400).json({ message: error.message });
+        }
+    });
+};
+
+export { uploadProfilePicture, getSignedUrl, uploadEventPhotos };
