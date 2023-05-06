@@ -2,6 +2,7 @@ import passport from "passport";
 import User from "../models/user.js";
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
+import * as helperFn from '../controllers/helpers.js';
 
 dotenv.config();
 
@@ -21,7 +22,8 @@ passport.use(new GoogleStrategy({
             } else {
                 const newUser = await User.create({
                     googleId: profile.id,
-                    username: profile.emails[0].value, // Set username to email temporarily
+                    // Use random username for Google users, which they can change later
+                    username: helperFn.generateUsername(profile.name.givenName, profile.name.familyName),
                     email: profile.emails[0].value,
                     firstName: profile.name.givenName,
                     lastName: profile.name.familyName,
@@ -33,8 +35,5 @@ passport.use(new GoogleStrategy({
         }
     }
 ));
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 export { passport, GoogleStrategy };

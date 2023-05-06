@@ -31,9 +31,9 @@ const uploadProfilePicture = async (req, res, next) => {
             user.profilePicture = result.fileName;
             await user.save();
 
-            res.status(200).json({ imageUrl: result.fileName });
+            return res.status(200).json({ imageUrl: result.fileName });
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: error.message });
         }
     });
 };

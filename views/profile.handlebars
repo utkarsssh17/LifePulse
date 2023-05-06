@@ -8,9 +8,11 @@
               <div class="text-center">
                 <div class="profile-picture">
                   {{#if user.profilePicture}}
-                    <img src="{{user.profilePicture}}" alt="Profile picture" style="max-width: 150px;"  class="rounded-circle profile-picture-img shadow-sm"/>
+                  <img src="{{user.profilePicture}}" alt="Profile picture" style="max-width: 150px;"
+                    class="rounded-circle profile-picture-img shadow-sm" />
                   {{else}}
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg" alt="Profile picture" style="max-width: 150px;"  class="rounded-circle profile-picture-img shadow-sm" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg" alt="Profile picture"
+                    style="max-width: 150px;" class="rounded-circle profile-picture-img shadow-sm" />
                   {{/if}}
                 </div>
               </div>
@@ -23,22 +25,29 @@
                   {{user.email}}
                 </div>
                 <div class="mb-3">
-                  <span class="text-muted">Date of birth:</span>
-                  {{user.dob}}
+                  <div class="mb-3">
+                    <span class="text-muted">Username:</span>
+                    {{user.username}}
+                  </div>
+                  <div class="mb-3">
+                    <span id="date" class="text-muted">Date of birth:</span>
+                    {{user.dob}}
+                  </div>
+                  <div class="mb-3">
+                    <span class="text-muted">Bio:</span>
+                    {{user.bio}}
+                  </div>
+                  <div class="mb-3">
+                    <span class="text-muted">Location:</span>
+                    {{user.location}}
+                  </div>
+                  <div class="mb-3">
+                    <span class="text-muted">Joined:</span>
+                    {{user.createdAt}}
+                  </div>
+                  <a href="/user/{{user.username}}/edit" class="btn btn-primary">Edit Profile</a>
+                  <a href="/auth/logout" class="btn btn-primary">Logout</a>
                 </div>
-                <div class="mb-3">
-                  <span class="text-muted">Bio:</span>
-                  {{user.bio}}
-                </div>
-                <div class="mb-3">
-                  <span class="text-muted">Location:</span>
-                  {{user.location}}
-                </div>
-                <div class="mb-3">
-                  <span class="text-muted">Joined:</span>
-                  {{user.createdAt}}
-                </div>
-                <a href="/auth/logout" class="btn btn-primary">Logout</a>
               </div>
             </div>
           </div>
@@ -46,4 +55,3 @@
       </div>
     </div>
   </div>
-</div>

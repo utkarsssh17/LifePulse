@@ -10,6 +10,7 @@ import express from 'express';
 import { passport, GoogleStrategy } from './config/passport.js';
 import User from './models/user.js';
 import dotenv from 'dotenv';
+import * as helperFn from './controllers/helpers.js';
 
 dotenv.config();
 
@@ -50,6 +51,9 @@ export function addGlobalMiddlewares(app) {
         cookie: { maxAge: 1000 * 60 * 60 * 24 }
     }));
 
+    // Trim all incoming data
+    app.use(helperFn.trimRequestFields());
+
     // configure flash messages
     app.use((req, res, next) => {
         res.locals.successMessage = req.flash('successMessage');
@@ -63,19 +67,22 @@ export function addGlobalMiddlewares(app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.serializeUser(User.serializeUser());
-    passport.deserializeUser(User.deserializeUser());
+    // Serialize and deserialize user
+    passport.serializeUser(function (user, done) {
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(async function (id, done) {
+        try {
+            const user = await User.findById(id);
+            done(null, user);
+        } catch (err) {
+            done(err);
+        }
+    });
 
     // Passport Strategies
     passport.use(GoogleStrategy);
 }
 
-export function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        // If user is authenticated, continue to the next middleware function
-        return next();
-    } else {
-        // If user is not authenticated, redirect to the login page
-        res.redirect('/auth/login');
-    }
-}
+
