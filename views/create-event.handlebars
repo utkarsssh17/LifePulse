@@ -1,0 +1,99 @@
+<script src="../../public/js/create-event.js"></script>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Create Event</h2>
+                    <form id="create-event-form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="eventTitle">Event Name:</label>
+                            <input type="text" class="form-control" id="eventTitle" name="eventTitle" placeholder="Enter event name"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Description:</label>
+                            <textarea class="form-control" id="eventDescription" name="eventDescription"
+                                placeholder="Enter event description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventLocation">Location:</label>
+                            <input type="text" class="form-control" id="eventLocation" name="eventLocation"
+                                placeholder="Enter event location" required />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="eventDate">Event Date:</label>
+                                <input type="date" class="form-control" id="eventDate" name="eventDate" required />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="eventTime">Event Time:</label>
+                                <input type="time" class="form-control" id="eventTime" name="eventTime" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="eventDuration">Duration (in minutes):</label>
+                                <input type="number" class="form-control" id="eventDuration" name="eventDuration"
+                                    placeholder="Enter duration in minutes" min="1" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventCategory">Category:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="music" name="eventCategory[]"
+                                    value="music">
+                                <label class="form-check-label" for="music">Music</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="art" name="eventCategory[]" value="art">
+                                <label class="form-check-label" for="art">Art</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="food" name="eventCategory[]" value="food">
+                                <label class="form-check-label" for="food">Food</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sports" name="eventCategory[]"
+                                    value="sports">
+                                <label class="form-check-label" for="sports">Sports</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="tech" name="eventCategory[]" value="tech">
+                                <label class="form-check-label" for="tech">Tech</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="education" name="eventCategory[]"
+                                    value="education">
+                                <label class="form-check-label" for="education">Education</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventMaxCapacity">Max Capacity:</label>
+                            <input type="number" class="form-control" id="eventMaxCapacity" name="eventMaxCapacity"
+                                placeholder="Enter max capacity" min="1" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="eventPhotos">Event Photos:</label>
+                            <input type="file" class="form-control-file" id="eventPhotos" name="eventPhotos" multiple
+                                accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <div id="photoPreview" class="d-flex flex-wrap"></div>
+                            <small id="photoCount" class="form-text text-muted"></small>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-block">Create Event</button>
+                        </div>
+                        {{#if errorMessage}}
+                        <div class="alert alert-danger">{{errorMessage}}</div>
+                        {{/if}}
+                        {{#if successMessage}}
+                        <div class="alert alert-success">{{successMessage}}</div>
+                        {{/if}}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

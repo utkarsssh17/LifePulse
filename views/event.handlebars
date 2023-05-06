@@ -1,0 +1,55 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="fw-bold text-center">{{event.title}}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{event.displayPicture}}" class="card-img-top" alt="{{event.title}}">
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Organizer: <a
+                                        href="/user/{{organizer.username}}">{{organizer.firstName}}
+                                        {{organizer.lastName}}</a></li>
+                                <li class="list-group-item">Event Date: {{event.eventDate}}</li>
+                                <li class="list-group-item">Event Time: {{event.eventTime}}</li>
+                                <li class="list-group-item">Location: {{event.location}}</li>
+                                <li class="list-group-item">Category: {{event.category}}</li>
+                                <li class="list-group-item">Duration: {{event.duration}} minutes</li>
+                                <li class="list-group-item">Remaining Seats:
+                                    {{event.remainingSeats}}/{{event.maxCapacity}}</li>
+                                <li class="list-group-item">Ratings:
+                                    {{#if event.averageRating}}
+                                    {{ event.averageRating }}/5
+                                    {{else}}
+                                    No ratings yet
+                                    {{/if}}
+                                </li>
+                                <li class="list-group-item">Created At: {{event.createdAt}}</li>
+                                <li class="list-group-item">Last Updated At: {{event.updatedAt}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    {{#if event.photos}}
+                    <hr>
+                    <h5>Photos:</h5>
+                    <div class="row">
+                        {{#each event.photos}}
+                        <div class="col-md-4 mb-3">
+                            <img src="{{this}}" class="img-thumbnail" alt="Event Photo">
+                        </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                    <hr>
+                    <h5>Event Description:</h5>
+                    <p>{{event.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
