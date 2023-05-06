@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ensureAuthenticated } from '../middleware.js';
+import { ensureAuthenticated } from '../controllers/helpers.js';
 import * as imageController from '../controllers/images.js';
 
 const router = Router();

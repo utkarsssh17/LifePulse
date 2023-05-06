@@ -1,6 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import User from "../models/user.js";
 
+// For users who used Google to sign up
+const generateUsername = (firstName, lastName) => {
+    const randomNum = Math.floor(Math.random() * 10000);
+    const username = `${firstName.toLowerCase()}_${lastName.toLowerCase()}_${randomNum}`;
+    return username;
+};
+
 const randomizeFileName = (extension) => {
     return `${uuidv4()}${extension}`;
 };
@@ -23,8 +30,8 @@ const isValidUsername = (username) => {
     if (!username) {
         throw new Error("Username cannot be empty.");
     }
-    if (username.length < 2 || username.length > 12) {
-        throw new Error("Username must be between 2 and 12 characters long.");
+    if (username.length < 2) {
+        throw new Error("Username must be at least 2 characters long.");
     }
     const regex = /^[a-zA-Z0-9_.]+$/;
     if (!regex.test(username)) {
@@ -103,4 +110,42 @@ const isValidDOB = (dob) => {
     }
 };
 
-export { randomizeFileName, isValidName, isValidUsername, usernameExists, isValidEmail, emailExists, isValidPassword, passwordsMatch, isValidDOB };
+const isValidBio = (bio) => {
+    if (!bio) {
+        throw new Error("Bio cannot be empty.");
+    }
+    if (bio.length > 500) {
+        throw new Error("Bio cannot be more than 500 characters long.");
+    }
+    return true;
+};
+
+const trimRequestFields = () => {
+    return (req, res, next) => {
+        if (req.body) {
+            for (let key in req.body) {
+                if (typeof req.body[key] === 'string') {
+                    req.body[key] = req.body[key].trim();
+                }
+            }
+        }
+        next();
+    }
+};
+
+const ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        // If user is authenticated, continue to the next middleware function
+        return next();
+    } else {
+        // If user is not authenticated, redirect to the login page
+        return res.redirect('/auth/login');
+    }
+}
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 10);
+}
+
+export { generateUsername, randomizeFileName, isValidName, isValidUsername, usernameExists, isValidEmail, emailExists, isValidPassword, passwordsMatch, isValidDOB, isValidBio, trimRequestFields, ensureAuthenticated, formatDate };

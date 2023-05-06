@@ -1,41 +1,29 @@
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function togglePassword() {
+    const passwordInput = document.querySelector('#password');
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+
+    const icon = document.querySelector('.toggle-password i');
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const completeProfileForm = document.getElementById('complete-profile-form');
-    completeProfileForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(completeProfileForm);
-
-        try {
-            // Make first request to the /complete-profile route
-            await fetch('/user/complete-profile', {
-                method: 'POST',
-                body: JSON.stringify({
-                    firstName: formData.get('firstName'),
-                    lastName: formData.get('lastName'),
-                    username: formData.get('username'),
-                    email: formData.get('email'),
-                    dob: formData.get('dob'),
-                    location: formData.get('location'),
-                    bio: formData.get('bio')
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            // Make second request to the /images/upload route
-            const imageFormData = new FormData();
-            imageFormData.append('image', formData.get('image'));
-
-            await fetch('/images/upload', {
-                method: 'POST',
-                body: imageFormData
-            });
-
-            // Redirect to profile page
-            window.location.href = `/user/${formData.get('username')}`;
-        } catch (error) {
-            console.error(error);
-        }
+    const dateElements = document.querySelectorAll('.date');
+    // Convert date to local date string
+    dateElements.forEach((dateElement) => {
+        const date = new Date(dateElement.textContent);
+        const formattedDate = formatDate(date);
+        dateElement.textContent = formattedDate;
     });
 });
+
+

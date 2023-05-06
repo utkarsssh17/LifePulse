@@ -3,7 +3,7 @@ import * as userController from '../controllers/users.js';
 import * as helperFn from './helpers.js';
 
 const register = async (req, res) => {
-    const { firstName, lastName, username, email, dob, password, confirmPassword } = req.body;
+    let { firstName, lastName, username, email, dob, password, confirmPassword } = req.body;
     if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
         req.flash("errorMessage", "All fields are required.");
         return res.render('register', { errorMessage: req.flash('errorMessage'), firstName, lastName, username, email });
@@ -28,7 +28,8 @@ const register = async (req, res) => {
         helperFn.passwordsMatch(password, confirmPassword);
     } catch (error) {
         req.flash("errorMessage", error);
-        return res.render('register', { errorMessage: req.flash('errorMessage'), firstName, lastName, username, email });
+        dob = helperFn.formatDate(dob);
+        return res.render('register', { errorMessage: req.flash('errorMessage'), firstName, lastName, username, email, dob });
     }
     // register user using usercontroller
     userController.registerUser(req, res);
