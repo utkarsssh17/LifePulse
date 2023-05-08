@@ -52,7 +52,20 @@ const getEventById = async (req, res, next) => {
         // Get organizer details
         const organizer = await User.findById(event.organizerId).lean();
 
-        return res.render('event', { title: event.title, event, organizer, user: req.user });
+        // Check if user is attending the event
+        let userAttending = false;
+        if (req.user) {
+            const user = await User.findById(req.user.id).lean();
+            if (user) {
+                for (let i in user.eventIds) {
+                    if (user.eventIds[i].toString() === event._id.toString()) {
+                        userAttending = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return res.render('event', { title: event.title, event, organizer, user: req.user, userAttending });
     } catch (error) {
         next(error);
     }
@@ -72,4 +85,46 @@ const getAllEvents = async () => {
     }
 };
 
-export { createEvent, getEventById, getAllEvents };
+
+// RSVP and cancel RSVP
+const rsvpEvent = async (req, res, next) => {
+    try {
+        const event = await Event.findById(req.params.id);
+        if (!event) {
+            return res.status(404).render("error", { title: "404 Event Not Found!", statusCode: 404, errorMessage: "The event you are looking for does not exist.", user: req.user });
+        }
+        if (event.organizerId.toString() === req.user.id.toString()) {
+            return res.status(400).send({ errorMessage: "You cannot RSVP to your own event." });
+        }
+        if (event.attendees.length === event.maxCapacity) {
+            return res.status(400).send({ errorMessage: "This event is already full." });
+        }
+        if (event.eventDate < new Date()) {
+            return res.status(400).send({ errorMessage: "This event has already passed." });
+        }
+        if (!req.user) {
+            return res.status(400).send({ errorMessage: "You must be logged in to RSVP to an event." });
+        }
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).send({ errorMessage: "The user does not exist." });
+        }
+        if (event.attendees.includes(user.id)) {
+            event.attendees.pull(user.id);
+            user.eventIds.pull(event.id);
+            await event.save();
+            await user.save();
+            return res.status(200).send({ successMessage: "You have successfully cancelled your RSVP." });
+        } else {
+            event.attendees.push(user.id);
+            user.eventIds.push(event.id);
+            await event.save();
+            await user.save();
+            return res.status(200).send({ successMessage: "You have successfully RSVP'd to this event." });
+        }
+    } catch (error) {
+        return res.status(400).send({ errorMessage: error.message });
+    }
+};
+
+export { createEvent, getEventById, getAllEvents, rsvpEvent };
