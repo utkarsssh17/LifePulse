@@ -34,6 +34,12 @@ export function addGlobalMiddlewares(app) {
     app.engine('handlebars', exphbs.engine({ defaultLayout: 'main', partialsDir: partialsDir }));
     app.set('view engine', 'handlebars');
 
+    const hbs = exphbs.create({});
+
+    hbs.handlebars.registerHelper('eq', function(arg1, arg2) {
+        return (arg1 === arg2);
+      });
+      
     // Connect flash middleware
     app.use(flash());
 
