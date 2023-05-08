@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { ensureAuthenticated } from '../controllers/helpers.js';
 import * as eventController from '../controllers/events.js';
-import * as helperFn from '../controllers/helpers.js';
 
 const router = Router();
 

@@ -27,10 +27,10 @@ const uploadProfilePicture = async (req, res, next) => {
             return res.status(400).json({ message: err.message });
         }
         try {
-            if (!req.file) {
+            if (!req.files['image'][0]) {
                 return res.status(400).json({ message: "Please upload a picture." });
             }
-            const result = await uploadImageToS3(req.file);
+            const result = await uploadImageToS3(req.files['image'][0]);
 
             const user = await User.findById(req.user._id);
             user.profilePicture = result.fileName;
@@ -82,4 +82,4 @@ const uploadEventPhotos = async (req, res, next) => {
     });
 };
 
-export { uploadProfilePicture, getSignedUrl, uploadEventPhotos };
+export { uploadImageToS3, uploadProfilePicture, getSignedUrl, uploadEventPhotos };

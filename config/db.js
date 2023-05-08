@@ -9,9 +9,20 @@ const connectDB = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
+        console.log('Connected to database');
     } catch (error) {
         console.error(error);
     }
 };
 
-export default connectDB;
+//close connection
+const closeDB = async () => {
+    try {
+        await mongoose.connection.close();
+        console.log('Connection to database closed');
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export { connectDB, closeDB };
