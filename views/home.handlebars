@@ -1,15 +1,22 @@
-<div class="container">
-  <div class="row justify-content-center mt-5">
-    <div class="col-lg-6">
-      <div class="card">
-        <div class="card-body text-center">
-          <h1 class="mb-4">Welcome to LifePulse</h1>
-          {{#unless user}}
-          <a href="/auth/login" class="btn btn-primary mr-2">Login</a>
-          <a href="/auth/register" class="btn btn-secondary">Register</a>
-          {{/unless}}
-        </div>
+<div class="container my-5">
+  <div class="jumbotron">
+    <h1 class="display-4 text-center">Welcome to LifePulse</h1>
+    <p class="lead text-center">Explore | Attend | Review</p>
+    <hr class="my-4">
+  </div>
+  <h1 class="mb-4">Upcoming Events</h1>
+  <div class="row">
+    {{#each events}}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <a href="/events/{{this._id}}">
+          <img src="{{this.displayPicture}}" class="card-img-top event-img" alt="{{this.title}}">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{this.title}}</h5>
+          </div>
+        </a>
       </div>
     </div>
+    {{/each}}
   </div>
 </div>

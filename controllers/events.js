@@ -58,4 +58,18 @@ const getEventById = async (req, res, next) => {
     }
 };
 
-export { createEvent, getEventById };
+// Get all events
+const getAllEvents = async () => {
+    try {
+        const events = await Event.find().lean();
+        for (let i = 0; i < events.length; i++) {
+            const signedEventImageUrl = await imageController.getSignedUrl(events[i].displayPicture);
+            events[i].displayPicture = signedEventImageUrl;
+        }
+        return events;
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { createEvent, getEventById, getAllEvents };

@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-2">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -8,7 +8,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
+                            {{#if event.displayPicture}}
                             <img src="{{event.displayPicture}}" class="card-img-top" alt="{{event.title}}">
+                            {{else}}
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+                                class="card-img-top" alt="{{event.title}}">
+                            {{/if}}
                         </div>
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
@@ -34,9 +39,12 @@
                             </ul>
                         </div>
                     </div>
+                    <hr>
+                    <h5>Event Description:</h5>
+                    <p>{{event.description}}</p>
                     {{#if event.photos}}
                     <hr>
-                    <h5>Photos:</h5>
+                    <h5>Other Event Photos:</h5>
                     <div class="row">
                         {{#each event.photos}}
                         <div class="col-md-4 mb-3">
@@ -45,9 +53,6 @@
                         {{/each}}
                     </div>
                     {{/if}}
-                    <hr>
-                    <h5>Event Description:</h5>
-                    <p>{{event.description}}</p>
                 </div>
             </div>
         </div>
