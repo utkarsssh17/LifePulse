@@ -1,3 +1,4 @@
+<script src="../public/js/event.js"></script>
 <div class="container mt-2">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -36,6 +37,31 @@
                                 </li>
                                 <li class="list-group-item">Created At: {{event.createdAt}}</li>
                                 <li class="list-group-item">Last Updated At: {{event.updatedAt}}</li>
+                                {{#if user}}
+                                {{#if userAttending}}
+                                <li class="list-group-item">
+                                    <button type="button" class="btn btn-danger rsvp-btn" data-event-id="{{event._id}}"
+                                        data-action="cancel">Cancel RSVP</button>
+                                </li>
+                                {{else if (eq event.remainingSeats 0)}}
+                                <li class="list-group-item">
+                                    <div class="alert alert-danger" role="alert">
+                                        This event is full!
+                                    </div>
+                                </li>
+                                {{else}}
+                                <li class="list-group-item">
+                                    <button type="button" class="btn btn-primary rsvp-btn" data-event-id="{{event._id}}"
+                                        data-action="rsvp">RSVP</button>
+                                </li>
+                                {{/if}}
+                                {{else}}
+                                <li class="list-group-item">
+                                    <form method="get" action="/auth/login">
+                                        <button type="submit" class="btn btn-primary">Login to RSVP!</button>
+                                    </form>
+                                </li>
+                                {{/if}}
                             </ul>
                         </div>
                     </div>
