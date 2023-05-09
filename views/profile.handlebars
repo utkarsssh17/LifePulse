@@ -20,19 +20,23 @@
             <div class="col-lg-8">
               <div class="profile-info">
                 <h1 class="mb-4">{{user.firstName}} {{user.lastName}}</h1>
+                {{#if user.email}}
                 <div class="mb-3">
                   <span class="text-muted">Email:</span>
                   {{user.email}}
                 </div>
+                {{/if}}
                 <div class="mb-3">
                   <div class="mb-3">
                     <span class="text-muted">Username:</span>
                     {{user.username}}
                   </div>
+                  {{#if user.dob}}
                   <div class="mb-3">
                     <span id="date" class="text-muted">Date of birth:</span>
                     {{user.dob}}
                   </div>
+                  {{/if}}
                   <div class="mb-3">
                     <span class="text-muted">Bio:</span>
                     {{user.bio}}
@@ -45,8 +49,10 @@
                     <span class="text-muted">Joined:</span>
                     {{user.createdAt}}
                   </div>
+                  {{#if (eq currentUser.username user.username)}}
                   <a href="/user/{{user.username}}/edit" class="btn btn-primary">Edit Profile</a>
                   <a href="/auth/logout" class="btn btn-primary">Logout</a>
+                  {{/if}}
                 </div>
               </div>
             </div>

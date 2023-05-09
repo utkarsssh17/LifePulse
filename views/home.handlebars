@@ -10,7 +10,12 @@
     <div class="col-md-4 mb-4">
       <div class="card h-100">
         <a href="/events/{{this._id}}">
+          {{#if this.displayPicture}}
           <img src="{{this.displayPicture}}" class="card-img-top event-img" alt="{{this.title}}">
+          {{else}}
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+            class="card-img-top event-img" alt="Event Picture Not Available">
+          {{/if}}
           <div class="card-body">
             <h5 class="card-title text-center">{{this.title}}</h5>
           </div>

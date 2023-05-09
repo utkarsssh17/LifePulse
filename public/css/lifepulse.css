@@ -56,3 +56,7 @@ button[type="submit"] {
   object-position: center;
   border-radius: 50%;
 }
+
+.star {
+  color: gold;
+}

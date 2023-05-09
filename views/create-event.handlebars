@@ -8,8 +8,8 @@
                     <form id="create-event-form" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="eventTitle">Event Name:</label>
-                            <input type="text" class="form-control" id="eventTitle" name="eventTitle" placeholder="Enter event name"
-                                required />
+                            <input type="text" class="form-control" id="eventTitle" name="eventTitle"
+                                placeholder="Enter event name" required />
                         </div>
                         <div class="form-group">
                             <label for="eventDescription">Description:</label>
@@ -40,33 +40,11 @@
                         </div>
                         <div class="form-group">
                             <label for="eventCategory">Category:</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="music" name="eventCategory[]"
-                                    value="music">
-                                <label class="form-check-label" for="music">Music</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="art" name="eventCategory[]" value="art">
-                                <label class="form-check-label" for="art">Art</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="food" name="eventCategory[]" value="food">
-                                <label class="form-check-label" for="food">Food</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="sports" name="eventCategory[]"
-                                    value="sports">
-                                <label class="form-check-label" for="sports">Sports</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="tech" name="eventCategory[]" value="tech">
-                                <label class="form-check-label" for="tech">Tech</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="education" name="eventCategory[]"
-                                    value="education">
-                                <label class="form-check-label" for="education">Education</label>
-                            </div>
+                            <select class="form-control" id="eventCategory" name="eventCategory[]" multiple>
+                                {{#each categories}}
+                                <option value="{{this}}">{{this}}</option>
+                                {{/each}}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="eventMaxCapacity">Max Capacity:</label>

@@ -3,6 +3,12 @@ import User from "../models/user.js";
 import * as imageController from "./images.js";
 import * as helperFn from "./helpers.js";
 
+const eventCategories = ["Arts", "Business", "Charity & Causes", "Cooking", "Education", "Fashion", "Food & Drink", "Government", "Health", "Music", "Networking", "Party", "Science & Tech", "Sports", "Travel & Outdoor", "Other"];
+
+const renderCreateEvent = (req, res) => {
+    res.render("create-event", { title: "Create an Event", user: req.user, categories: eventCategories });
+};
+
 // Create new event
 const createEvent = async (req, res, next) => {
     const { eventTitle, eventDescription, eventLocation, eventDate, eventTime, eventDuration, eventCategory, eventMaxCapacity } = req.body;
@@ -65,7 +71,50 @@ const getEventById = async (req, res, next) => {
                 }
             }
         }
-        return res.render('event', { title: event.title, event, organizer, user: req.user, userAttending });
+
+        // Get attendees details
+        const attendees = [];
+        if (event.attendees && event.attendees.length > 0) {
+            for (let i = 0; i < event.attendees.length; i++) {
+                const attendee = await User.findById(event.attendees[i]).lean();
+                attendee.profilePicture = await imageController.getSignedUrl(attendee.profilePicture);
+                attendees.push(attendee);
+            }
+        }
+
+        // Get comments details
+        const comments = [];
+        if (event.comments && event.comments.length > 0) {
+            for (let i = 0; i < event.comments.length; i++) {
+                const comment = event.comments[i];
+                const commenter = await User.findById(comment.userId).lean();
+                if (commenter.profilePicture) {
+                    comment.commenterProfilePicture = await imageController.getSignedUrl(commenter.profilePicture);
+                }
+                comment.commenterUserName = commenter.username;
+                comment.commenterFirstName = commenter.firstName;
+                comment.commenterLastName = commenter.lastName;
+                comments.push(comment);
+            }
+        }
+
+        // Get reviews details
+        const reviews = [];
+        if (event.reviews && event.reviews.length > 0) {
+            for (let i = 0; i < event.reviews.length; i++) {
+                const review = event.reviews[i];
+                const reviewer = await User.findById(review.userId).lean();
+                if (reviewer.profilePicture) {
+                    review.reviewerProfilePicture = await imageController.getSignedUrl(reviewer.profilePicture);
+                }
+                review.reviewerUserName = reviewer.username;
+                review.reviewerFirstName = reviewer.firstName;
+                review.reviewerLastName = reviewer.lastName;
+                reviews.push(review);
+            }
+        }
+
+        return res.render('event', { title: event.title, event, organizer, user: req.user ? req.user.toJSON() : null, userAttending, attendees, comments, reviews });
     } catch (error) {
         next(error);
     }
@@ -96,9 +145,6 @@ const rsvpEvent = async (req, res, next) => {
         if (event.organizerId.toString() === req.user.id.toString()) {
             return res.status(400).send({ errorMessage: "You cannot RSVP to your own event." });
         }
-        if (event.attendees.length === event.maxCapacity) {
-            return res.status(400).send({ errorMessage: "This event is already full." });
-        }
         if (event.eventDate < new Date()) {
             return res.status(400).send({ errorMessage: "This event has already passed." });
         }
@@ -116,6 +162,9 @@ const rsvpEvent = async (req, res, next) => {
             await user.save();
             return res.status(200).send({ successMessage: "You have successfully cancelled your RSVP." });
         } else {
+            if (event.attendees.length === event.maxCapacity) {
+                return res.status(400).send({ errorMessage: "This event is already full." });
+            }
             event.attendees.push(user.id);
             user.eventIds.push(event.id);
             await event.save();
@@ -127,4 +176,4 @@ const rsvpEvent = async (req, res, next) => {
     }
 };
 
-export { createEvent, getEventById, getAllEvents, rsvpEvent };
+export { renderCreateEvent, createEvent, getEventById, getAllEvents, rsvpEvent };

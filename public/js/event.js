@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const messageContainer = document.querySelector('.card-body');
 
                     // Remove existing alert messages
-                    const existingAlerts = messageContainer.querySelectorAll('.alert');
+                    const existingAlerts = messageContainer.querySelectorAll('.rsvp-alert');
                     existingAlerts.forEach(alert => alert.remove());
                     if (successMessage) {
                         const successAlert = document.createElement('div');
-                        successAlert.classList.add('alert', 'alert-success');
+                        successAlert.classList.add('alert', 'rsvp-alert', 'alert-success');
                         successAlert.textContent = successMessage;
                         messageContainer.insertBefore(successAlert, messageContainer.firstChild);
                         if (action === 'rsvp') {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     } else if (errorMessage) {
                         const errorAlert = document.createElement('div');
-                        errorAlert.classList.add('alert', 'alert-danger');
+                        errorAlert.classList.add('alert', 'rsvp-alert', 'alert-danger');
                         errorAlert.textContent = errorMessage;
                         messageContainer.insertBefore(errorAlert, messageContainer.firstChild);
                     }
