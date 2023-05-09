@@ -98,5 +98,3 @@ export function addGlobalMiddlewares(app) {
     // Passport Strategies
     passport.use(GoogleStrategy);
 }
-
-
