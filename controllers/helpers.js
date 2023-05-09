@@ -148,4 +148,49 @@ const formatDate = (dateString) => {
     return date.toISOString().slice(0, 10);
 }
 
-export { generateUsername, randomizeFileName, isValidName, isValidUsername, usernameExists, isValidEmail, emailExists, isValidPassword, passwordsMatch, isValidDOB, isValidBio, trimRequestFields, ensureAuthenticated, formatDate };
+const validateRating = (rating) => {
+    if (!rating) {
+        throw new Error("Rating cannot be empty.");
+    }
+    if (isNaN(rating)) {
+        throw new Error("Rating must be a number.");
+    }
+    if (rating < 1 || rating > 5) {
+        throw new Error("Rating must be between 1 and 5.");
+    }
+    return true;
+}
+
+const validateReview = (review) => {
+    if (!review) {
+        throw new Error("Review cannot be empty.");
+    }
+    if (typeof review !== 'string') {
+        throw new Error("Review must be a string.");
+    }
+    if (review.length < 5) {
+        throw new Error("Review must be at least 5 characters long.");
+    }
+    if (review.length > 500) {
+        throw new Error("Review cannot be more than 500 characters long.");
+    }
+    return true;
+}
+
+const validateComment = (comment) => {
+    if (!comment) {
+        throw new Error("Comment cannot be empty.");
+    }
+    if (typeof comment !== 'string') {
+        throw new Error("Comment must be a string.");
+    }
+    if (comment.length < 5) {
+        throw new Error("Comment must be at least 5 characters long.");
+    }
+    if (comment.length > 500) {
+        throw new Error("Comment cannot be more than 500 characters long.");
+    }
+    return true;
+}
+
+export { generateUsername, randomizeFileName, isValidName, isValidUsername, usernameExists, isValidEmail, emailExists, isValidPassword, passwordsMatch, isValidDOB, isValidBio, trimRequestFields, ensureAuthenticated, formatDate, validateRating, validateReview, validateComment };
