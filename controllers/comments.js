@@ -98,5 +98,3 @@ const deleteComment = async (req, res, next) => {
 }
 
 export { addComment, editComment, deleteComment };
-
-
