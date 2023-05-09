@@ -1,4 +1,7 @@
 <script src="../public/js/event.js"></script>
+<script src="../public/js/rsvp.js"></script>
+<script src="../public/js/comments.js"></script>
+<script src="../public/js/reviews.js"></script>
 <div class="container mt-2">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -38,7 +41,11 @@
                                 <li class="list-group-item">Created At: {{event.createdAt}}</li>
                                 <li class="list-group-item">Last Updated At: {{event.updatedAt}}</li>
                                 {{#if user}}
-                                {{#if userAttending}}
+                                {{#if event.isPastEvent}}
+                                <div class="alert alert-danger" role="alert">
+                                    This event has already passed!
+                                </div>
+                                {{else if isAttendee}}
                                 <li class="list-group-item">
                                     <button type="button" class="btn btn-danger rsvp-btn" data-event-id="{{event._id}}"
                                         data-action="cancel">Cancel RSVP</button>
@@ -95,8 +102,8 @@
                         </div>
                         <div class="card-body">
                             <ul class="list-group">
-                                {{#if attendees}}
-                                {{#each attendees}}
+                                {{#if event.attendees}}
+                                {{#each event.attendees}}
                                 <li class="list-group-item">
                                     <div class="d-flex align-items-center">
                                         {{#if this.profilePicture}}
@@ -121,20 +128,135 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="card mt-3">
-                        <div class="card-header">
-                            <h5 class="fw-bold">Comments:</h5>
+                    <div class="card mt-3 comment-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold m-0" id="comment-heading">Comments:</h5>
+                            {{#if user}}
+                            <button type="button" class="btn btn-primary add-comment-btn" data-action="add-comment">Add
+                                Comment</button>
+                            <div id="add-comment-form" class="card-body" style="display:none;">
+                                <h5>Add a Comment</h5>
+                                <form id="comment-form">
+                                    <div class="mb-3">
+                                        <label for="comment-content" class="form-label">Comment:</label>
+                                        <textarea class="form-control" id="comment-content" name="comment-content"
+                                            rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary comment-submit-btn"
+                                        data-event-id="{{event._id}}">Submit</button>
+                                    <button type="button" class="btn btn-secondary cancel-comment-btn">Cancel</button>
+                                </form>
+                            </div>
+                            {{/if}}
+                        </div>
+                        <div class="mt-4">
+                            {{#if event.comments}}
+                            {{#each event.comments}}
+                            <div class="card mb-3" id="comment-{{this._id}}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            {{#if this.commenterProfilePicture}}
+                                            <img src="{{this.commenterProfilePicture}}" class="rounded-circle me-3"
+                                                width="50" height="50" alt="User Avatar">
+                                            {{else}}
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg"
+                                                class="rounded-circle me-3" width="50" height="50"
+                                                alt="User Profile Picture Not Available">
+                                            {{/if}}
+                                            <div>
+                                                <a href="/user/{{this.commenterUserName}}"
+                                                    class="fw-bold">{{this.commenterFirstName}}
+                                                    {{this.commenterLastName}}</a>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="text-muted mb-0">
+                                                <p>Commented At: {{moment this.createdAt "MMMM Do YYYY, h:mm:ss a"}}
+                                                </p>
+                                                <p>Last Updated At: {{moment this.updatedAt "MMMM Do YYYY, h:mm:ss
+                                                    a"}}</p>
+                                            </div>
+                                            {{#if (eq this.commenterUserName ../user.username)}}
+                                            <button type="button" class="btn btn-primary" id="edit-comment-btn"
+                                                data-action="edit-comment" data-comment-id="{{this._id}}"
+                                                data-comment-index="{{@index}}">Edit Comment</button>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <p class="card-text" id="comment-display">{{this.commentText}}</p>
+                                    <div id="edit-comment-form">
+                                        <div class="mb-3">
+                                            <label for="edit-comment-textarea" class="form-label">Comment:</label>
+                                            <textarea class="form-control" id="edit-comment-textarea"
+                                                rows="3">{{this.commentText}}</textarea>
+                                        </div>
+                                        {{#if (eq this.commenterUserName ../user.username)}}
+                                        <div class="d-flex justify-content-between edit-form-buttons">
+                                            <button type="button" class="btn btn-primary" id="save-comment-btn"
+                                                data-comment-id="{{this._id}}">Save</button>
+                                            <button type="button" class="btn btn-secondary" id="cancel-edit-comment-btn"
+                                                data-comment-id="{{this._id}}">Cancel</button>
+                                            <button type=" button" class="btn btn-danger" id="delete-comment-btn"
+                                                data-comment-id="{{this._id}}">Delete this
+                                                comment</button>
+                                        </div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                            {{else}}
+                            <div class="alert alert-info" role="alert">
+                                No comments yet. Be the first one to comment!
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="card mt-3 review-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold m-0" id="review-heading">Reviews:</h5>
+                            {{#if event.isPastEvent}}
+                            {{#if isAttendee}}
+                            <button type="button" class="btn btn-primary add-review-btn" data-action="add-review">Add
+                                Review</button>
+                            <div id="add-review-form" class="card-body" style="display:none;">
+                                <h5>Add a Review</h5>
+                                <form id="review-form">
+                                    <div class="mb-3">
+                                        <label for="review-rating" class="form-label">Rating:</label>
+                                        <select class="form-select" id="review-rating" name="review-rating">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="review-content" class="form-label">Review:</label>
+                                        <textarea class="form-control" id="review-content" name="review-content"
+                                            rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary review-submit-btn"
+                                        data-event-id="{{event._id}}">Submit</button>
+                                    <button type="button" class="btn btn-secondary cancel-review-btn">Cancel</button>
+                                </form>
+                            </div>
+                            {{/if}}
+                            {{/if}}
                         </div>
                         <div class="card-body">
                             <div class="mt-4">
-                                {{#if event.comments}}
-                                {{#each event.comments}}
-                                <div class="card mb-3">
+                                {{#if event.reviews}}
+                                {{#each event.reviews}}
+                                <div class="card mb-3" id="review-{{this._id}}">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-flex align-items-center">
-                                                {{#if this.commenterProfilePicture}}
-                                                <img src="{{this.commenterProfilePicture}}" class="rounded-circle me-3"
+                                                {{#if this.reviewerProfilePicture}}
+                                                <img src="{{this.reviewerProfilePicture}}" class="rounded-circle me-3"
                                                     width="50" height="50" alt="User Avatar">
                                                 {{else}}
                                                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg"
@@ -142,86 +264,68 @@
                                                     alt="User Profile Picture Not Available">
                                                 {{/if}}
                                                 <div>
-                                                    <a href="/user/{{this.commenterUserName}}"
-                                                        class="fw-bold">{{this.commenterFirstName}}
-                                                        {{this.commenterLastName}}</a>
+                                                    <a href="/user/{{this.reviewerUserName}}"
+                                                        class="fw-bold">{{this.reviewerFirstName}}
+                                                        {{this.reviewerLastName}}</a>
                                                 </div>
                                             </div>
                                             <div class="text-end">
                                                 <div class="text-muted mb-0">
-                                                    <p>Commented At: {{moment this.createdAt "MMMM Do YYYY, h:mm:ss a"}}
-                                                    </p>
-                                                    <p>Last Updated At: {{moment this.updatedAt "MMMM Do YYYY, h:mm:ss
+                                                    <p>Reviewed At: {{moment this.createdAt "MMMM Do YYYY, h:mm:ss
                                                         a"}}</p>
+                                                    <p>Last Updated At: {{moment this.updatedAt "MMMM Do YYYY,
+                                                        h:mm:ss a"}}</p>
                                                 </div>
+                                                {{#if (eq this.reviewerUserName ../user.username)}}
+                                                <button type="button" class="btn btn-primary edit-review-btn"
+                                                    data-action="edit-review" data-review-id="{{this._id}}"
+                                                    data-review-index="{{@index}}">Edit Review</button>
+                                                {{/if}}
                                             </div>
                                         </div>
                                         <hr>
-                                        <p class="card-text">{{this.commentText}}</p>
+                                        <p id="rating-display"> Rating:
+                                            {{#repeat this.rating}}
+                                            <i class="fas fa-star star active"></i>
+                                            {{/repeat}}
+                                        </p>
+                                        <p id="review-display">Review: {{this.reviewText}}</p>
+                                        <div id="edit-review-form">
+                                            <div class="mb-3">
+                                                <label for="edit-rating-input" class="form-label">Rating:</label>
+                                                <div id="rating-input" data-rating="{{this.rating}}">
+                                                    {{#repeat 5}}
+                                                    <i
+                                                        class="fas fa-star star{{#if (gte @index ../rating)}} active{{/if}}"></i>
+                                                    {{/repeat}}
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit-review-textarea" class="form-label">Review:</label>
+                                                <textarea class="form-control" id="edit-review-textarea"
+                                                    rows="3">{{this.reviewText}}</textarea>
+                                            </div>
+                                            {{#if (eq this.reviewerUserName ../user.username)}}
+                                            <div class="d-flex justify-content-between edit-form-buttons">
+                                                <button type="button" class="btn btn-primary" id="save-review-btn"
+                                                    data-review-id="{{this._id}}">Save</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    id="cancel-edit-review-btn"
+                                                    data-review-id="{{this._id}}">Cancel</button>
+                                                <button type=" button" class="btn btn-danger" id="delete-review-btn"
+                                                    data-review-id="{{this._id}}">Delete this
+                                                    review</button>
+                                            </div>
+                                            {{/if}}
+                                        </div>
                                     </div>
                                 </div>
                                 {{/each}}
                                 {{else}}
                                 <div class="alert alert-info" role="alert">
-                                    No comments yet. Be the first one to comment!
+                                    No reviews yet. Be the first one to review!
                                 </div>
                                 {{/if}}
-                            </div>
-                        </div>
-                        <div class="card mt-3">
-                            <div class="card-header">
-                                <h5 class="fw-bold">Reviews:</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="mt-4">
-                                    {{#if event.reviews}}
-                                    {{#each event.reviews}}
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center">
-                                                    {{#if this.reviewerProfilePicture}}
-                                                    <img src="{{this.reviewerProfilePicture}}"
-                                                        class="rounded-circle me-3" width="50" height="50"
-                                                        alt="User Avatar">
-                                                    {{else}}
-                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg"
-                                                        class="rounded-circle me-3" width="50" height="50"
-                                                        alt="User Profile Picture Not Available">
-                                                    {{/if}}
-                                                    <div>
-                                                        <a href="/user/{{this.reviewerUserName}}"
-                                                            class="fw-bold">{{this.reviewerFirstName}}
-                                                            {{this.reviewerLastName}}</a>
-                                                    </div>
-                                                </div>
-                                                <div class="text-end">
-                                                    <div class="text-muted mb-0">
-                                                        <p>Reviewed At: {{moment this.createdAt "MMMM Do YYYY, h:mm:ss
-                                                            a"}}
-                                                        </p>
-                                                        <p>Last Updated At: {{moment this.updatedAt "MMMM Do YYYY,
-                                                            h:mm:ss
-                                                            a"}}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <p>Rating:
-                                                {{#repeat this.rating}}
-                                                <i class="fas fa-star star"></i>
-                                                {{/repeat}}
-                                            </p>
-                                            <p>Review: {{this.reviewText}}</p>
-                                        </div>
-                                    </div>
-                                    {{/each}}
-                                    {{else}}
-                                    <div class="alert alert-info" role="alert">
-                                        No reviews yet. Be the first one to review!
-                                    </div>
-                                    {{/if}}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -229,4 +333,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

@@ -58,32 +58,22 @@ const getEventById = async (req, res, next) => {
         // Get organizer details
         const organizer = await User.findById(event.organizerId).lean();
 
-        // Check if user is attending the event
-        let userAttending = false;
-        if (req.user) {
-            const user = await User.findById(req.user.id).lean();
-            if (user) {
-                for (let i in user.eventIds) {
-                    if (user.eventIds[i].toString() === event._id.toString()) {
-                        userAttending = true;
-                        break;
+        // Get attendees details
+        let isAttendee = false;
+        if (event.attendees && event.attendees.length > 0) {
+            for (let i = 0; i < event.attendees.length; i++) {
+                const attendee = await User.findById(event.attendees[i]).lean();
+                attendee.profilePicture = await imageController.getSignedUrl(attendee.profilePicture);
+                event.attendees[i] = attendee;
+                if (req.user) {
+                    if (attendee._id.toString() === req.user.id.toString()) {
+                        isAttendee = true;
                     }
                 }
             }
         }
 
-        // Get attendees details
-        const attendees = [];
-        if (event.attendees && event.attendees.length > 0) {
-            for (let i = 0; i < event.attendees.length; i++) {
-                const attendee = await User.findById(event.attendees[i]).lean();
-                attendee.profilePicture = await imageController.getSignedUrl(attendee.profilePicture);
-                attendees.push(attendee);
-            }
-        }
-
         // Get comments details
-        const comments = [];
         if (event.comments && event.comments.length > 0) {
             for (let i = 0; i < event.comments.length; i++) {
                 const comment = event.comments[i];
@@ -94,27 +84,33 @@ const getEventById = async (req, res, next) => {
                 comment.commenterUserName = commenter.username;
                 comment.commenterFirstName = commenter.firstName;
                 comment.commenterLastName = commenter.lastName;
-                comments.push(comment);
             }
         }
 
         // Get reviews details
-        const reviews = [];
         if (event.reviews && event.reviews.length > 0) {
             for (let i = 0; i < event.reviews.length; i++) {
                 const review = event.reviews[i];
                 const reviewer = await User.findById(review.userId).lean();
+                if (req.user) {
+                    if (reviewer._id.toString() === req.user.id.toString()) {
+                    }
+                }
                 if (reviewer.profilePicture) {
                     review.reviewerProfilePicture = await imageController.getSignedUrl(reviewer.profilePicture);
                 }
                 review.reviewerUserName = reviewer.username;
                 review.reviewerFirstName = reviewer.firstName;
                 review.reviewerLastName = reviewer.lastName;
-                reviews.push(review);
             }
         }
 
-        return res.render('event', { title: event.title, event, organizer, user: req.user ? req.user.toJSON() : null, userAttending, attendees, comments, reviews });
+        event.isPastEvent = false;
+        if (new Date(event.eventDate) < new Date()) {
+            event.isPastEvent = true;
+        }
+
+        return res.render('event', { title: event.title, event, organizer, user: req.user ? req.user.toJSON() : null, isAttendee });
     } catch (error) {
         next(error);
     }

@@ -274,7 +274,7 @@ const events = [
         updatedAt: new Date('2022-12-30'),
     },
     {
-        organizerId: registeredUsers[9]._id,
+        organizerId: registeredUsers[2]._id,
         title: 'Los Pollos Hermanos Grand Opening Charity Event',
         description: 'Join us for the grand opening of our new restaurant, Los Pollos Hermanos. Come try our famous fried chicken. All proceeds will go to charity.',
         displayPicture: (await uploadPictures(['E7_01.jpg'], eventsImageDir))[0],
