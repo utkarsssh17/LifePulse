@@ -11,6 +11,7 @@ import { passport, GoogleStrategy } from './config/passport.js';
 import User from './models/user.js';
 import dotenv from 'dotenv';
 import * as helperFn from './controllers/helpers.js';
+import moment from 'moment';
 
 dotenv.config();
 
@@ -38,6 +39,13 @@ export function addGlobalMiddlewares(app) {
 
     hbs.handlebars.registerHelper('eq', function(arg1, arg2) {
         return (arg1 === arg2);
+    });
+
+    hbs.handlebars.registerHelper('moment', function (date, format) {
+        return moment(date).format(format);
+    });
+    hbs.handlebars.registerHelper('repeat', function (times, block) {
+        return Array.from({length: times}, (_, index) => block.fn(index)).join('');
       });
       
     // Connect flash middleware
@@ -90,5 +98,3 @@ export function addGlobalMiddlewares(app) {
     // Passport Strategies
     passport.use(GoogleStrategy);
 }
-
-

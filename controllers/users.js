@@ -97,8 +97,15 @@ const getProfile = async (req, res, next) => {
         user.profilePicture = signedProfilePictureUrl;
         user.dob = helperFn.formatDate(user.dob);
         user.createdAt = helperFn.formatDate(user.createdAt);
+
+        // If the profile is of other user than the currently logged in one, then hide the email and dob
+        if (user.username !== req.user.username) {
+            user.email = undefined;
+            user.dob = undefined;
+        }
+
         if (req.url === `/${user.username}`) {
-            return res.render('profile', { user });
+            return res.render('profile', { user, currentUser: req.user.toJSON() });
         } else if (req.url === `/${user.username}/edit`) {
             return res.render('edit-profile', { user });
         }

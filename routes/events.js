@@ -5,9 +5,7 @@ import * as eventController from '../controllers/events.js';
 const router = Router();
 
 // Create new event
-router.get('/create', ensureAuthenticated, (req, res) => {
-    res.render('create-event', { title: 'Create an Event', user: req.user });
-});
+router.get('/create', ensureAuthenticated, eventController.renderCreateEvent);
 
 router.post('/create', ensureAuthenticated, eventController.createEvent);
 

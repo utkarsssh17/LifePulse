@@ -10,11 +10,11 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    commentCreatedAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },
-    commentUpdatedAt: {
+    updatedAt: {
         type: Date,
         default: Date.now,
     },
@@ -36,11 +36,11 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
     },
-    reviewCreatedAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },
-    reviewUpdatedAt: {
+    updatedAt: {
         type: Date,
         default: Date.now,
     },
@@ -85,7 +85,7 @@ const eventSchema = new mongoose.Schema({
     ],
     averageRating: {
         type: Number,
-        min: 1,
+        min: 0,
         max: 5,
     },
     reviews: [reviewSchema],

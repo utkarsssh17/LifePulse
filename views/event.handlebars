@@ -13,7 +13,7 @@
                             <img src="{{event.displayPicture}}" class="card-img-top" alt="{{event.title}}">
                             {{else}}
                             <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
-                                class="card-img-top" alt="{{event.title}}">
+                                class="card-img-top" alt="Event Picture Not Available">
                             {{/if}}
                         </div>
                         <div class="col-md-6">
@@ -49,6 +49,15 @@
                                         This event is full!
                                     </div>
                                 </li>
+                                {{else if (eq organizer.username user.username)}}
+                                <li class="list-group-item">
+                                    <button type="button" class="btn btn-primary rsvp-btn" data-event-id="{{event._id}}"
+                                        data-action="edit-event">Edit Event</button>
+                                </li>
+                                <li class="list-group-item">
+                                    <button type="button" class="btn btn-danger rsvp-btn" data-event-id="{{event._id}}"
+                                        data-action="delete-event">Delete this Event</button>
+                                </li>
                                 {{else}}
                                 <li class="list-group-item">
                                     <button type="button" class="btn btn-primary rsvp-btn" data-event-id="{{event._id}}"
@@ -79,6 +88,143 @@
                         {{/each}}
                     </div>
                     {{/if}}
+                    <hr>
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="fw-bold">Who's Going:</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                {{#if attendees}}
+                                {{#each attendees}}
+                                <li class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        {{#if this.profilePicture}}
+                                        <img src="{{this.profilePicture}}" class="rounded-circle me-3" width="50"
+                                            height="50" alt="User Avatar">
+                                        {{else}}
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg"
+                                            class="rounded-circle me-3" width="50" height="50"
+                                            alt="User Profile Picture Not Available">
+                                        {{/if}}
+                                        <div>
+                                            <h6 class="mb-0"><a href="/user/{{this.username}}">{{this.firstName}}
+                                                    {{this.lastName}}</a></h6>
+                                        </div>
+                                    </div>
+                                </li>
+                                {{/each}}
+                                {{else}}
+                                <div class="alert alert-info" role="alert">
+                                    No one is going to this event right now. Be the first to RSVP!
+                                    {{/if}}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="fw-bold">Comments:</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mt-4">
+                                {{#if event.comments}}
+                                {{#each event.comments}}
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                {{#if this.commenterProfilePicture}}
+                                                <img src="{{this.commenterProfilePicture}}" class="rounded-circle me-3"
+                                                    width="50" height="50" alt="User Avatar">
+                                                {{else}}
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg"
+                                                    class="rounded-circle me-3" width="50" height="50"
+                                                    alt="User Profile Picture Not Available">
+                                                {{/if}}
+                                                <div>
+                                                    <a href="/user/{{this.commenterUserName}}"
+                                                        class="fw-bold">{{this.commenterFirstName}}
+                                                        {{this.commenterLastName}}</a>
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <div class="text-muted mb-0">
+                                                    <p>Commented At: {{moment this.createdAt "MMMM Do YYYY, h:mm:ss a"}}
+                                                    </p>
+                                                    <p>Last Updated At: {{moment this.updatedAt "MMMM Do YYYY, h:mm:ss
+                                                        a"}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <p class="card-text">{{this.commentText}}</p>
+                                    </div>
+                                </div>
+                                {{/each}}
+                                {{else}}
+                                <div class="alert alert-info" role="alert">
+                                    No comments yet. Be the first one to comment!
+                                </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h5 class="fw-bold">Reviews:</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mt-4">
+                                    {{#if event.reviews}}
+                                    {{#each event.reviews}}
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    {{#if this.reviewerProfilePicture}}
+                                                    <img src="{{this.reviewerProfilePicture}}"
+                                                        class="rounded-circle me-3" width="50" height="50"
+                                                        alt="User Avatar">
+                                                    {{else}}
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg"
+                                                        class="rounded-circle me-3" width="50" height="50"
+                                                        alt="User Profile Picture Not Available">
+                                                    {{/if}}
+                                                    <div>
+                                                        <a href="/user/{{this.reviewerUserName}}"
+                                                            class="fw-bold">{{this.reviewerFirstName}}
+                                                            {{this.reviewerLastName}}</a>
+                                                    </div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="text-muted mb-0">
+                                                        <p>Reviewed At: {{moment this.createdAt "MMMM Do YYYY, h:mm:ss
+                                                            a"}}
+                                                        </p>
+                                                        <p>Last Updated At: {{moment this.updatedAt "MMMM Do YYYY,
+                                                            h:mm:ss
+                                                            a"}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <p>Rating:
+                                                {{#repeat this.rating}}
+                                                <i class="fas fa-star star"></i>
+                                                {{/repeat}}
+                                            </p>
+                                            <p>Review: {{this.reviewText}}</p>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                    {{else}}
+                                    <div class="alert alert-info" role="alert">
+                                        No reviews yet. Be the first one to review!
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
