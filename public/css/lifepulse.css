@@ -58,5 +58,23 @@ button[type="submit"] {
 }
 
 .star {
+  color: gray;
+  transition: color 0.2s ease-in-out;
+}
+
+.star.active {
   color: gold;
 }
+
+#edit-comment-form {
+  display: none;
+}
+
+#edit-review-form {
+  display: none;
+}
+
+.edit-form-buttons {
+  display: none;
+}
+

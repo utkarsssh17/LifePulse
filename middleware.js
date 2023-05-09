@@ -37,7 +37,7 @@ export function addGlobalMiddlewares(app) {
 
     const hbs = exphbs.create({});
 
-    hbs.handlebars.registerHelper('eq', function(arg1, arg2) {
+    hbs.handlebars.registerHelper('eq', function (arg1, arg2) {
         return (arg1 === arg2);
     });
 
@@ -45,9 +45,16 @@ export function addGlobalMiddlewares(app) {
         return moment(date).format(format);
     });
     hbs.handlebars.registerHelper('repeat', function (times, block) {
-        return Array.from({length: times}, (_, index) => block.fn(index)).join('');
-      });
-      
+        return Array.from({ length: times }, (_, index) => block.fn(index)).join('');
+    });
+
+    hbs.handlebars.registerHelper('gte', function (arg1, arg2) {
+        if (arg1 >= arg1) {
+            return true;
+        }
+        return false;
+    });
+
     // Connect flash middleware
     app.use(flash());
 
