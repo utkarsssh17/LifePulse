@@ -45,6 +45,16 @@
                                 <div class="alert alert-danger" role="alert">
                                     This event has already passed!
                                 </div>
+                                {{else if (eq organizer.username user.username)}}
+                                <li class="list-group-item">
+                                    <button type="button" class="btn btn-primary edit-event-btn"
+                                        data-event-id="{{event._id}}">Edit Event</button>
+                                </li>
+                                <li class="list-group-item">
+                                    <button type="button" class="btn btn-danger delete-event-btn"
+                                        data-event-id="{{event._id}}" data-action="delete-event">Delete this
+                                        Event</button>
+                                </li>
                                 {{else if isAttendee}}
                                 <li class="list-group-item">
                                     <button type="button" class="btn btn-danger rsvp-btn" data-event-id="{{event._id}}"
@@ -55,15 +65,6 @@
                                     <div class="alert alert-danger" role="alert">
                                         This event is full!
                                     </div>
-                                </li>
-                                {{else if (eq organizer.username user.username)}}
-                                <li class="list-group-item">
-                                    <button type="button" class="btn btn-primary rsvp-btn" data-event-id="{{event._id}}"
-                                        data-action="edit-event">Edit Event</button>
-                                </li>
-                                <li class="list-group-item">
-                                    <button type="button" class="btn btn-danger rsvp-btn" data-event-id="{{event._id}}"
-                                        data-action="delete-event">Delete this Event</button>
                                 </li>
                                 {{else}}
                                 <li class="list-group-item">

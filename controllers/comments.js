@@ -28,6 +28,10 @@ const addComment = async (req, res, next) => {
 
         event.comments.push(comment);
         await event.save();
+
+        const commentId = event.comments[event.comments.length - 1].id;
+        user.commentIds.push(commentId);
+        await user.save();
         return res.status(200).send({ successMessage: "You have successfully added a comment." });
     } catch (error) {
         return res.status(400).send({ errorMessage: error.message });
@@ -49,6 +53,10 @@ const editComment = async (req, res, next) => {
 
         if (!req.user) {
             return res.status(400).send({ errorMessage: "You must be logged in to add a comment." });
+        }
+
+        if (comment.userId.toString() !== req.user.id.toString()) {
+            return res.status(400).send({ errorMessage: "You can only edit your own comments." });
         }
 
         const user = await User.findById(req.user.id);
@@ -84,6 +92,10 @@ const deleteComment = async (req, res, next) => {
             return res.status(400).send({ errorMessage: "You must be logged in to add a comment." });
         }
 
+        if (comment.userId.toString() !== req.user.id.toString()) {
+            return res.status(400).send({ errorMessage: "You can not delete someone else's comment!" });
+        }
+
         const user = await User.findById(req.user.id);
         if (!user) {
             return res.status(404).send({ errorMessage: "The user does not exist." });
@@ -91,6 +103,9 @@ const deleteComment = async (req, res, next) => {
 
         event.comments = event.comments.filter(comment => comment.id !== commentId);
         await event.save();
+
+        user.commentIds = user.commentIds.filter(commentId => commentId !== commentId);
+        await user.save();
         return res.status(200).send({ successMessage: "You have successfully deleted your comment." });
     } catch (error) {
         return res.status(400).send({ errorMessage: error.message });
