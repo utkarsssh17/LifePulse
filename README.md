@@ -2,11 +2,11 @@
 CS546 - Final Project
 
 
-Name
+Name：
 Lifepulse
 
 
-Description
+Description：
 LifePulse is an innovative event-sharing platform that aims to help
 users discover and share entertainment activities and events. Our
 user-friendly interface allows users to search and browse through a wide
@@ -16,12 +16,12 @@ addition, users who attend an event can rate and review it, providing
 valuable feedback to other users.
 
 
-Installation
+Installation：
 run the following commands in order:
 npm i
 npm run seed
 npm start
 
 
-Authors
+Authors：
 group41
