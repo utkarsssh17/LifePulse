@@ -12,6 +12,7 @@ import User from './models/user.js';
 import dotenv from 'dotenv';
 import * as helperFn from './controllers/helpers.js';
 import moment from 'moment';
+import helmet from 'helmet';
 
 dotenv.config();
 
@@ -60,6 +61,14 @@ export function addGlobalMiddlewares(app) {
 
     // CORS middleware
     app.use(cors());
+
+    // Helmet middleware
+    app.use(helmet({
+        contentSecurityPolicy: false,
+    }));
+
+    // Sanitize request data
+    app.use(helperFn.sanitizeRequest());
 
     // Log HTTP requests to console
     app.use(morgan('dev'));

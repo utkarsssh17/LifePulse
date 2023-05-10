@@ -61,6 +61,10 @@ const addReview = async (req, res, next) => {
         event.reviews.push(review);
         await event.save();
         await updateAverageRating(req, res, next);
+
+        const reviewId = event.reviews[event.reviews.length - 1].id;
+        user.reviewIds.push(reviewId);
+        await user.save();
         return res.status(200).send({ successMessage: "You have successfully added a review." });
     } catch (error) {
         return res.status(400).send({ errorMessage: error.message });
@@ -135,6 +139,9 @@ const deleteReview = async (req, res, next) => {
         event.reviews = event.reviews.filter(review => review.id !== reviewId);
         await event.save();
         await updateAverageRating(req, res, next);
+
+        user.reviewIds = user.reviewIds.filter(review => review.id !== reviewId);
+        await user.save();
         return res.status(200).send({ successMessage: "You have successfully deleted your review." });
     } catch (error) {
         return res.status(400).send({ errorMessage: error.message });

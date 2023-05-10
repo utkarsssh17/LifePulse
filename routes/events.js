@@ -14,6 +14,13 @@ router.post('/create', ensureAuthenticated, eventController.createEvent);
 // Get event by id
 router.get('/:id', eventController.getEventById);
 
+// Edit event
+router.get('/:id/edit', ensureAuthenticated, eventController.renderEditEvent);
+router.put('/:id/edit', ensureAuthenticated, eventController.editEvent);
+
+// Delete event
+router.delete('/:id', ensureAuthenticated, eventController.deleteEvent);
+
 // Event RSVP endpoint
 router.post('/:id/rsvp', ensureAuthenticated, eventController.rsvpEvent);
 

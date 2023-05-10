@@ -1,75 +1,64 @@
-<script src="../public/js/create-event.js"></script>
+<script src="../../public/js/edit-event.js"></script>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title text-center mb-4">Create Event</h2>
-                    <form id="create-event-form" enctype="multipart/form-data">
+                    <h2 class="card-title text-center mb-4">Edit Event</h2>
+                    <form id="edit-event-form" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="eventTitle">Event Name:</label>
                             <input type="text" class="form-control" id="eventTitle" name="eventTitle"
-                                placeholder="Enter event name" required />
+                                placeholder="Enter event name" required value="{{event.title}}" />
                         </div>
                         <div class="form-group">
                             <label for="eventDescription">Description:</label>
                             <textarea class="form-control" id="eventDescription" name="eventDescription"
-                                placeholder="Enter event description" rows="3" required></textarea>
+                                placeholder="Enter event description" rows="3" required>{{event.description}}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="eventLocation">Location:</label>
                             <input type="text" class="form-control" id="eventLocation" name="eventLocation"
-                                placeholder="Enter event location" required />
+                                placeholder="Enter event location" required value="{{event.location}}" />
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="eventDate">Event Date:</label>
-                                <input type="date" class="form-control" id="eventDate" name="eventDate" required />
+                                <input type="date" class="form-control" id="eventDate" name="eventDate" required
+                                    value="{{event.eventDate}}" />
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="eventTime">Event Time:</label>
-                                <input type="time" class="form-control" id="eventTime" name="eventTime" required />
+                                <input type="time" class="form-control" id="eventTime" name="eventTime" required
+                                    value="{{event.eventTime}}" />
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="eventDuration">Duration (in minutes):</label>
                                 <input type="number" class="form-control" id="eventDuration" name="eventDuration"
-                                    placeholder="Enter duration in minutes" min="1" required />
+                                    placeholder="Enter duration in minutes" min="1" required
+                                    value="{{event.duration}}" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="eventCategory">Category:</label>
                             <select class="form-control" id="eventCategory" name="eventCategory[]" multiple>
                                 {{#each categories}}
-                                <option value="{{this}}">{{this}}</option>
+                                <option value="{{this}}" {{#if selected}}selected{{/if}}>{{this}}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="eventMaxCapacity">Max Capacity:</label>
                             <input type="number" class="form-control" id="eventMaxCapacity" name="eventMaxCapacity"
-                                placeholder="Enter max capacity" min="1" required />
+                                placeholder="Enter max capacity" min="1" required value="{{event.maxCapacity}}" />
                         </div>
-                        <div class="form-group">
-                            <label for="eventPhotos">Event Photos:</label>
-                            <input type="file" class="form-control-file" id="eventPhotos" name="eventPhotos" multiple
-                                accept="image/*">
-                        </div>
-                        <div class="form-group">
-                            <div id="photoPreview" class="d-flex flex-wrap"></div>
-                            <small id="photoCount" class="form-text text-muted"></small>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-block">Create Event</button>
-                        </div>
-                        {{#if errorMessage}}
-                        <div class="alert alert-danger">{{errorMessage}}</div>
-                        {{/if}}
-                        {{#if successMessage}}
-                        <div class="alert alert-success">{{successMessage}}</div>
-                        {{/if}}
                     </form>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary event-edit-submit-btn" form="edit-event-form">Save</button>
+                        <a href="/" class="btn btn-secondary">Cancel</a>
+                    </div>
                 </div>
             </div>
         </div>

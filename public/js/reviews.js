@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             starElem.classList.remove('active');
                         }
                     });
-                    ratingInput.setAttribute('data-rating', rating - 5);
+                    ratingInput.setAttribute('data-rating', rating);
                 });
                 starElem.addEventListener('mouseover', () => {
                     starElems.forEach((starElem, i) => {

@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import User from "../models/user.js";
+import xss from "xss";
 
 // For users who used Google to sign up
 const generateUsername = (firstName, lastName) => {
@@ -193,4 +194,19 @@ const validateComment = (comment) => {
     return true;
 }
 
-export { generateUsername, randomizeFileName, isValidName, isValidUsername, usernameExists, isValidEmail, emailExists, isValidPassword, passwordsMatch, isValidDOB, isValidBio, trimRequestFields, ensureAuthenticated, formatDate, validateRating, validateReview, validateComment };
+const sanitizeRequest = () => {
+    return (req, res, next) => {
+        for (const key in req.body) {
+            req.body[key] = xss(req.body[key]);
+        }
+        for (const key in req.query) {
+            req.query[key] = xss(req.query[key]);
+        }
+        for (const key in req.params) {
+            req.params[key] = xss(req.params[key]);
+        }
+        next();
+    }
+}
+
+export { generateUsername, randomizeFileName, isValidName, isValidUsername, usernameExists, isValidEmail, emailExists, isValidPassword, passwordsMatch, isValidDOB, isValidBio, trimRequestFields, ensureAuthenticated, formatDate, validateRating, validateReview, validateComment, sanitizeRequest };
