@@ -5,8 +5,8 @@
     <p class="lead text-center">Explore | Attend | Review</p>
     <hr class="my-4">
   </div>
-  <h1 class="mb-4">All Events</h1>
-  <div class="row event-row">
+  <h2 class="mb-4">All Events</h2>
+  <div class="row">
     {{#each events}}
     <div class="col-md-4 mb-4">
       <div class="card h-100">
@@ -18,7 +18,7 @@
             class="card-img-top event-img" alt="Event Picture Not Available">
           {{/if}}
           <div class="card-body">
-            <h5 class="card-title text-center">{{this.title}}</h5>
+            <p class="card-title text-center event-title-home">{{this.title}}</p>
           </div>
         </a>
       </div>
