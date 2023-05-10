@@ -14,7 +14,7 @@ router.get('/complete-profile', ensureAuthenticated, (req, res) => {
     if (req.user.isProfileComplete) {
         return res.redirect('/user/profile');
     }
-    res.render('complete-profile', { user });
+    res.render('complete-profile', { user, title: "Complete Profile" });
 });
 
 router.post('/complete-profile', ensureAuthenticated, userController.completeProfile);

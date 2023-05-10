@@ -47,17 +47,17 @@
                                 </div>
                                 {{else if (eq organizer.username user.username)}}
                                 <li class="list-group-item">
-                                    <button type="button" class="btn btn-primary edit-event-btn"
-                                        data-event-id="{{event._id}}">Edit Event</button>
+                                    <button class="btn btn-primary edit-event-btn" data-event-id="{{event._id}}">Edit
+                                        Event</button>
                                 </li>
                                 <li class="list-group-item">
-                                    <button type="button" class="btn btn-danger delete-event-btn"
-                                        data-event-id="{{event._id}}" data-action="delete-event">Delete this
+                                    <button class="btn btn-danger delete-event-btn" data-event-id="{{event._id}}"
+                                        data-action="delete-event">Delete this
                                         Event</button>
                                 </li>
                                 {{else if isAttendee}}
                                 <li class="list-group-item">
-                                    <button type="button" class="btn btn-danger rsvp-btn" data-event-id="{{event._id}}"
+                                    <button class="btn btn-danger rsvp-btn" data-event-id="{{event._id}}"
                                         data-action="cancel">Cancel RSVP</button>
                                 </li>
                                 {{else if (eq event.remainingSeats 0)}}
@@ -68,7 +68,7 @@
                                 </li>
                                 {{else}}
                                 <li class="list-group-item">
-                                    <button type="button" class="btn btn-primary rsvp-btn" data-event-id="{{event._id}}"
+                                    <button class="btn btn-primary rsvp-btn" data-event-id="{{event._id}}"
                                         data-action="rsvp">RSVP</button>
                                 </li>
                                 {{/if}}
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <hr>
-                    <p class='event-page-title'>Event Description:</h5>
+                    <p class='event-page-title'>Event Description:</p>
                     <p>{{event.description}}</p>
                     {{#if event.photos}}
                     <hr>
@@ -118,7 +118,7 @@
                                         <div>
                                             <p class="mb-0 attendee"><a
                                                     href="/user/{{this.username}}">{{this.firstName}}
-                                                    {{this.lastName}}</a></h6>
+                                                    {{this.lastName}}</a></p>
                                         </div>
                                     </div>
                                 </li>
@@ -134,7 +134,7 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <p class="fw-bold m-0 event-page-title" id="comment-heading">Comments:</p>
                             {{#if user}}
-                            <button type="button" class="btn btn-primary add-comment-btn" data-action="add-comment">Add
+                            <button class="btn btn-primary add-comment-btn" data-action="add-comment">Add
                                 Comment</button>
                             <div id="add-comment-form" class="card-body" style="display:none;">
                                 <p>Add a Comment</p>
@@ -146,7 +146,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary comment-submit-btn"
                                         data-event-id="{{event._id}}">Submit</button>
-                                    <button type="button" class="btn btn-secondary cancel-comment-btn">Cancel</button>
+                                    <button class="btn btn-secondary cancel-comment-btn">Cancel</button>
                                 </form>
                             </div>
                             {{/if}}
@@ -180,7 +180,7 @@
                                                     a"}}</p>
                                             </div>
                                             {{#if (eq this.commenterUserName ../user.username)}}
-                                            <button type="button" class="btn btn-primary" id="edit-comment-btn"
+                                            <button class="btn btn-primary" id="edit-comment-btn"
                                                 data-action="edit-comment" data-comment-id="{{this._id}}"
                                                 data-comment-index="{{@index}}">Edit Comment</button>
                                             {{/if}}
@@ -196,11 +196,11 @@
                                         </div>
                                         {{#if (eq this.commenterUserName ../user.username)}}
                                         <div class="d-flex justify-content-between edit-form-buttons">
-                                            <button type="button" class="btn btn-primary" id="save-comment-btn"
+                                            <button class="btn btn-primary" id="save-comment-btn"
                                                 data-comment-id="{{this._id}}">Save</button>
-                                            <button type="button" class="btn btn-secondary" id="cancel-edit-comment-btn"
+                                            <button class="btn btn-secondary" id="cancel-edit-comment-btn"
                                                 data-comment-id="{{this._id}}">Cancel</button>
-                                            <button type=" button" class="btn btn-danger" id="delete-comment-btn"
+                                            <button class="btn btn-danger" id="delete-comment-btn"
                                                 data-comment-id="{{this._id}}">Delete this
                                                 comment</button>
                                         </div>
@@ -221,7 +221,7 @@
                             <p class="fw-bold m-0 event-page-title" id="review-heading">Reviews:</p>
                             {{#if event.isPastEvent}}
                             {{#if isAttendee}}
-                            <button type="button" class="btn btn-primary add-review-btn" data-action="add-review">Add
+                            <button class="btn btn-primary add-review-btn" data-action="add-review">Add
                                 Review</button>
                             <div id="add-review-form" class="card-body" style="display:none;">
                                 <p>Add a Review</p>
@@ -243,7 +243,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary review-submit-btn"
                                         data-event-id="{{event._id}}">Submit</button>
-                                    <button type="button" class="btn btn-secondary cancel-review-btn">Cancel</button>
+                                    <button class="btn btn-secondary cancel-review-btn">Cancel</button>
                                 </form>
                             </div>
                             {{/if}}
@@ -279,7 +279,7 @@
                                                         h:mm:ss a"}}</p>
                                                 </div>
                                                 {{#if (eq this.reviewerUserName ../user.username)}}
-                                                <button type="button" class="btn btn-primary edit-review-btn"
+                                                <button class="btn btn-primary edit-review-btn"
                                                     data-action="edit-review" data-review-id="{{this._id}}"
                                                     data-review-index="{{@index}}">Edit Review</button>
                                                 {{/if}}
@@ -309,12 +309,11 @@
                                             </div>
                                             {{#if (eq this.reviewerUserName ../user.username)}}
                                             <div class="d-flex justify-content-between edit-form-buttons">
-                                                <button type="button" class="btn btn-primary" id="save-review-btn"
+                                                <button class="btn btn-primary" id="save-review-btn"
                                                     data-review-id="{{this._id}}">Save</button>
-                                                <button type="button" class="btn btn-secondary"
-                                                    id="cancel-edit-review-btn"
+                                                <button class="btn btn-secondary" id="cancel-edit-review-btn"
                                                     data-review-id="{{this._id}}">Cancel</button>
-                                                <button type=" button" class="btn btn-danger" id="delete-review-btn"
+                                                <button class="btn btn-danger" id="delete-review-btn"
                                                     data-review-id="{{this._id}}">Delete this
                                                     review</button>
                                             </div>
@@ -335,5 +334,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

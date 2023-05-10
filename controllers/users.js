@@ -105,9 +105,9 @@ const getProfile = async (req, res, next) => {
         }
 
         if (req.url === `/${user.username}`) {
-            return res.render('profile', { user, currentUser: req.user.toJSON() });
+            return res.render('profile', { user, currentUser: req.user.toJSON(), title: "Profile" });
         } else if (req.url === `/${user.username}/edit`) {
-            return res.render('edit-profile', { user });
+            return res.render('edit-profile', { user, title: "Edit Profile" });
         }
     } catch (error) {
         next(error);
