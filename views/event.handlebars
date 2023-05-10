@@ -7,7 +7,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="fw-bold text-center">{{event.title}}</h3>
+                    <h1 class="fw-bold text-center">{{event.title}}</h1>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -83,11 +83,11 @@
                         </div>
                     </div>
                     <hr>
-                    <h5>Event Description:</h5>
+                    <p class='event-page-title'>Event Description:</h5>
                     <p>{{event.description}}</p>
                     {{#if event.photos}}
                     <hr>
-                    <h5>Other Event Photos:</h5>
+                    <p class='event-page-title'>Other Event Photos:</p>
                     <div class="row">
                         {{#each event.photos}}
                         <div class="col-md-4 mb-3">
@@ -99,7 +99,7 @@
                     <hr>
                     <div class="card mt-3">
                         <div class="card-header">
-                            <h5 class="fw-bold">Who's Going:</h5>
+                            <p class="fw-bold event-page-title">Who's Going:</p>
                         </div>
                         <div class="card-body">
                             <ul class="list-group">
@@ -116,7 +116,8 @@
                                             alt="User Profile Picture Not Available">
                                         {{/if}}
                                         <div>
-                                            <h6 class="mb-0"><a href="/user/{{this.username}}">{{this.firstName}}
+                                            <p class="mb-0 attendee"><a
+                                                    href="/user/{{this.username}}">{{this.firstName}}
                                                     {{this.lastName}}</a></h6>
                                         </div>
                                     </div>
@@ -131,12 +132,12 @@
                     </div>
                     <div class="card mt-3 comment-card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="fw-bold m-0" id="comment-heading">Comments:</h5>
+                            <p class="fw-bold m-0 event-page-title" id="comment-heading">Comments:</p>
                             {{#if user}}
                             <button type="button" class="btn btn-primary add-comment-btn" data-action="add-comment">Add
                                 Comment</button>
                             <div id="add-comment-form" class="card-body" style="display:none;">
-                                <h5>Add a Comment</h5>
+                                <p>Add a Comment</p>
                                 <form id="comment-form">
                                     <div class="mb-3">
                                         <label for="comment-content" class="form-label">Comment:</label>
@@ -217,13 +218,13 @@
                     </div>
                     <div class="card mt-3 review-card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="fw-bold m-0" id="review-heading">Reviews:</h5>
+                            <p class="fw-bold m-0 event-page-title" id="review-heading">Reviews:</p>
                             {{#if event.isPastEvent}}
                             {{#if isAttendee}}
                             <button type="button" class="btn btn-primary add-review-btn" data-action="add-review">Add
                                 Review</button>
                             <div id="add-review-form" class="card-body" style="display:none;">
-                                <h5>Add a Review</h5>
+                                <p>Add a Review</p>
                                 <form id="review-form">
                                     <div class="mb-3">
                                         <label for="review-rating" class="form-label">Rating:</label>
